@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author s303004
+ * @author s698926
  */
-public class UserDAOTest {
+public class TaskDAOTest {
     
-    public UserDAOTest() {
+    public TaskDAOTest() {
     }
     
     @BeforeClass
@@ -36,12 +36,26 @@ public class UserDAOTest {
     @After
     public void tearDown() {
     }
-    
+
+    /*@Test
+    public void testGetTasks() {
+        TaskDAO instance = new TaskDAO();
+        instance.addTask("2008-11-11", "2009-11-11", "töihommia", "missä lystääpi");
+    }   
     @Test
-    public void testGetUsers() {
-        UserDAO instance = new UserDAO();
-        instance.addUser("Testi", "testipassu", "testi kuvaus!!");
+    public void testAddStart() {
+        TaskDAO instance = new TaskDAO();
+        instance.addStart(7);
+    } */  
+    @Test
+    public void testAddEnd() {
+        TaskDAO instance = new TaskDAO();
+        instance.addEnd(7);
     }
-    
+    @Test
+    public void testAddId() {
+        TaskDAO instance = new TaskDAO();
+        instance.addId(1, 7);
+    }
     
 }
