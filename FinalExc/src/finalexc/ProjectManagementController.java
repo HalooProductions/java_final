@@ -28,5 +28,9 @@ public class ProjectManagementController {
     public void deleteUser(String nimi) {
         new UserDAO().deleteUser(nimi);
     }
+    
+    public boolean isCorrectUser(String nimi, String salasana) {
+        return new UserDAO().getWithNameAndPassword(nimi, salasana);
+    }
    
 }

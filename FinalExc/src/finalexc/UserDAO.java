@@ -121,4 +121,37 @@ public class UserDAO {
 
         }
     }
+    
+    public boolean getWithNameAndPassword(String username, String password) {
+        Connection connect = null;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE name LIKE '" + username + "' AND password LIKE '" + password + "'");
+            
+            if (!rs.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+        
+        return false;
+    }
 }
