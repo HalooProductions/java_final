@@ -119,8 +119,9 @@ public class Login extends javax.swing.JFrame {
         
         ProjectManagementController pcontroller = new ProjectManagementController();
         if (pcontroller.isCorrectUser(username, password)) {
+            User u = pcontroller.getUser(username, password);
             this.setVisible(false);
-            new Mainview().setVisible(true);
+            Mainview.main(u);
         } else {
             System.out.println("Väärä käyttäjä");
         }

@@ -23,6 +23,42 @@ import java.sql.*;
 */
 public class UserDAO {
     private String dbUrl = "jdbc:mysql://localhost:3306/java_loppuharj";
+    
+    public User getUser(String username, String password) {
+        User u = new User();
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE name LIKE '" + username + "' AND password LIKE '" + password + "'");
+            
+            while (rs.next()) {
+                u.setId(rs.getInt("ID"));
+                String name = rs.getString("Name");
+                u.setPassword(rs.getString("Password"));
+                u.setDescription(rs.getString("Name"));
+                u.setName(name);
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+
+        return u;
+    }
 
     public Users getUsers() {
         Users urs = new Users();
@@ -61,8 +97,8 @@ public class UserDAO {
             }
 
         }
+        
         return urs;
-
     }
     
     public Users addUser(String nimi, String salasana, String kuvaus) {

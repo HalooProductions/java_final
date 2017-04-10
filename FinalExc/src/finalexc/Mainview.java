@@ -10,11 +10,13 @@ package finalexc;
  * @author s303004
  */
 public class Mainview extends javax.swing.JFrame {
-
+    private final User loggedUser;
     /**
      * Creates new form Mainview
+     * @param u
      */
-    public Mainview() {
+    public Mainview(User u) {
+        loggedUser = u;
         initComponents();
         modifyComponents();
     }
@@ -31,8 +33,8 @@ public class Mainview extends javax.swing.JFrame {
         tasksFilterBtnGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
+        taskTable = new javax.swing.JTable();
+        nameLabel = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         readyBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
@@ -46,11 +48,16 @@ public class Mainview extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 550));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Tehtävät");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        taskTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -76,9 +83,9 @@ public class Mainview extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(taskTable);
 
-        jLabel2.setText("Riku Wikman");
+        nameLabel.setText("no user");
 
         addBtn.setText("Lisää");
 
@@ -139,7 +146,7 @@ public class Mainview extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)))
+                                .addComponent(nameLabel)))
                         .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
@@ -148,7 +155,7 @@ public class Mainview extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(nameLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton1)
@@ -179,10 +186,19 @@ public class Mainview extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        nameLabel.setText(loggedUser.getName());
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        TaskTableModel model = new TaskTableModel(pmc.getOpenTasks());
+        
+        taskTable.setModel(model);
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(User u) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -210,7 +226,7 @@ public class Mainview extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Mainview().setVisible(true);
+                new Mainview(u).setVisible(true);
             }
         });
     }
@@ -219,17 +235,17 @@ public class Mainview extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JButton readyBtn;
     private javax.swing.JButton reserveBtn;
     private javax.swing.JButton startBtn;
+    private javax.swing.JTable taskTable;
     private javax.swing.ButtonGroup tasksFilterBtnGroup;
     // End of variables declaration//GEN-END:variables
 }

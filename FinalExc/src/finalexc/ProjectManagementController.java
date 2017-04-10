@@ -21,6 +21,10 @@ public class ProjectManagementController {
         return new UserDAO().getUsers();
     }
     
+    public User getUser(String nimi, String salasana) {
+        return new UserDAO().getUser(nimi, salasana);
+    }
+    
     public void addUser(String nimi, String salasana, String kuvaus) {
         new UserDAO().addUser(nimi, salasana, kuvaus);
     }
@@ -32,5 +36,12 @@ public class ProjectManagementController {
     public boolean isCorrectUser(String nimi, String salasana) {
         return new UserDAO().getWithNameAndPassword(nimi, salasana);
     }
-   
+    
+    public Tasks getTasks() {
+        return new TaskDAO().getTasks();
+    }   
+    
+    public Tasks getOpenTasks() {
+        return new TaskDAO().getOpenTasks();
+    }
 }
