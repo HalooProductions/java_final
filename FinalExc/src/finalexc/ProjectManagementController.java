@@ -44,4 +44,8 @@ public class ProjectManagementController {
     public Tasks getOpenTasks() {
         return new TaskDAO().getOpenTasks();
     }
+    public Tasks getUserTasks(int id){
+        System.out.println("kullihiiri");
+        return new TaskDAO().getUserTasks(id);
+    }
 }

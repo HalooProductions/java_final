@@ -61,10 +61,10 @@ public class TaskDAO {
             }
 
         }
-        
+
         return tas;
     }
-    
+
     public Tasks getOpenTasks() {
         Tasks tas = new Tasks();
         Task t;
@@ -102,6 +102,47 @@ public class TaskDAO {
         }
 
         return tas;
+    }
+
+    public Tasks getUserTasks(int id) {
+
+        Tasks utas = new Tasks();
+        Task ut;
+        Connection connect = null;
+        System.out.println("kullihiiri2");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks");
+            while (rs.next()) {
+                ut = new Task();
+                ut.setId(rs.getInt("ID"));
+                ut.setUser_id(rs.getInt("user_id"));
+                ut.setStart(rs.getString("start"));
+                ut.setEnd(rs.getString("end"));
+                ut.setDescription(rs.getString("description"));
+                ut.setPlace(rs.getString("place"));
+                utas.add(ut);
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+
+        return utas;
     }
 
     public Tasks addTask(String start, String end, String description, String place) {
@@ -165,6 +206,7 @@ public class TaskDAO {
         return tas;
 
     }
+
     public Tasks addId(int user_id, int id) {
         Tasks tas = new Tasks();
         Task t;
@@ -194,7 +236,7 @@ public class TaskDAO {
         return tas;
 
     }
-    
+
     public Tasks addEnd(int id) {
         String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
         System.out.println(end);
@@ -252,7 +294,7 @@ public class TaskDAO {
 
         }
     }
-    
+
     public User getUser(int id) {
         User u = new User();
         Connection connect = null;
@@ -260,11 +302,11 @@ public class TaskDAO {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             connect = DriverManager.getConnection(dbUrl, "root", "");
-            
+
             if (!connect.isClosed()) {
                 System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
             }
-            
+
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE id = '" + id + "'");
             while (rs.next()) {
@@ -282,7 +324,7 @@ public class TaskDAO {
                 //---------------------------
             }
         }
-        
+
         return u;
     }
 }

@@ -108,6 +108,11 @@ public class Mainview extends javax.swing.JFrame {
 
         tasksFilterBtnGroup.add(jRadioButton2);
         jRadioButton2.setText("Vain omat tehtävät");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -194,6 +199,13 @@ public class Mainview extends javax.swing.JFrame {
         
         taskTable.setModel(model);
     }//GEN-LAST:event_formWindowOpened
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        ProjectManagementController pmc = new ProjectManagementController();
+        TaskTableModel model = new TaskTableModel(pmc.getUserTasks(loggedUser.getId()));
+        
+        taskTable.setModel(model);
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     /**
      * @param args the command line arguments
