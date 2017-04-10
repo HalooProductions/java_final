@@ -5,6 +5,9 @@
  */
 package finalexc;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author s303004
@@ -94,6 +97,11 @@ public class Mainview extends javax.swing.JFrame {
         deleteBtn.setText("Poista");
 
         reserveBtn.setText("Varaa");
+        reserveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reserveBtnActionPerformed(evt);
+            }
+        });
 
         startBtn.setText("Aloita");
 
@@ -188,13 +196,32 @@ public class Mainview extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         nameLabel.setText(loggedUser.getName());
+        this.updateTable();
         
+        taskTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                reserveBtn.setEnabled(true);
+            }
+        });
+    }//GEN-LAST:event_formWindowOpened
+
+    private void reserveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveBtnActionPerformed
+        int row = taskTable.getSelectedRow();
+        int selectedId = (int) taskTable.getModel().getValueAt(row, 0);
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        pmc.reserveTaskForUser(selectedId, loggedUser.getId());
+        
+        this.updateTable();
+    }//GEN-LAST:event_reserveBtnActionPerformed
+
+    private void updateTable() {
         ProjectManagementController pmc = new ProjectManagementController();
         TaskTableModel model = new TaskTableModel(pmc.getOpenTasks());
         
         taskTable.setModel(model);
-    }//GEN-LAST:event_formWindowOpened
-
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -285,4 +285,30 @@ public class TaskDAO {
         
         return u;
     }
+    
+    public void reserveForUser(int id, int user_id) {
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            
+            Statement stmt = connect.createStatement();
+            int rs = stmt.executeUpdate("UPDATE tasks SET user_id = '" + user_id + "' WHERE ID = " + id + " ");
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+        }
+    }
 }

@@ -44,4 +44,8 @@ public class ProjectManagementController {
     public Tasks getOpenTasks() {
         return new TaskDAO().getOpenTasks();
     }
+    
+    public void reserveTaskForUser(int id, int user_id) {
+        new TaskDAO().reserveForUser(id, user_id);
+    }
 }
