@@ -64,4 +64,11 @@ public class Task {
     public void setPlace(String place) {
         this.place = place;
     }
+    
+    public String getUser() {
+        TaskDAO tdao = new TaskDAO();
+        User u = tdao.getUser(this.user_id);
+        
+        return u.getName();
+    }
 }

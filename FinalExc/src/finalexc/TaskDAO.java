@@ -45,11 +45,9 @@ public class TaskDAO {
                 t.setUser_id(rs.getInt("user_id"));
                 t.setStart(rs.getString("start"));
                 t.setEnd(rs.getString("end"));
-                t.setDescription("description");
-                t.setPlace("place");
+                t.setDescription(rs.getString("description"));
+                t.setPlace(rs.getString("place"));
                 tas.add(t);
-                System.out.println("Task was ");
-
             }
         } catch (Exception ex) {
             System.err.println("Exception: " + ex.getMessage());
@@ -63,8 +61,47 @@ public class TaskDAO {
             }
 
         }
+        
         return tas;
+    }
+    
+    public Tasks getOpenTasks() {
+        Tasks tas = new Tasks();
+        Task t;
+        Connection connect = null;
 
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks WHERE user_id IS NULL");
+            while (rs.next()) {
+                t = new Task();
+                t.setId(rs.getInt("ID"));
+                t.setUser_id(rs.getInt("user_id"));
+                t.setStart(rs.getString("start"));
+                t.setEnd(rs.getString("end"));
+                t.setDescription(rs.getString("description"));
+                t.setPlace(rs.getString("place"));
+                tas.add(t);
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+
+        return tas;
     }
 
     public Tasks addTask(String start, String end, String description, String place) {
@@ -214,5 +251,38 @@ public class TaskDAO {
             }
 
         }
+    }
+    
+    public User getUser(int id) {
+        User u = new User();
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE id = '" + id + "'");
+            while (rs.next()) {
+                u.setId(rs.getInt("ID"));
+                u.setName(rs.getString("name"));
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+        }
+        
+        return u;
     }
 }
