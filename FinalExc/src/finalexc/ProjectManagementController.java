@@ -45,7 +45,15 @@ public class ProjectManagementController {
         return new TaskDAO().getOpenTasks();
     }
     
+    public Tasks getUserTasks(int id) {
+        return new TaskDAO().getUserTasks(id);
+    }
+    
     public void reserveTaskForUser(int id, int user_id) {
         new TaskDAO().reserveForUser(id, user_id);
+    }
+    
+    public void addTask(String start, String end, String description, String place) {
+        new TaskDAO().addTask(start, end, description, place);
     }
 }
