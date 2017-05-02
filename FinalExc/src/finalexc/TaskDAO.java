@@ -285,4 +285,69 @@ public class TaskDAO {
         
         return u;
     }
+    
+    public void reserveForUser(int id, int user_id) {
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            
+            Statement stmt = connect.createStatement();
+            int rs = stmt.executeUpdate("UPDATE tasks SET user_id = '" + user_id + "' WHERE ID = " + id + " ");
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+        }
+    }
+    
+    public Tasks getUserTasks(int id) {
+        Tasks tas = new Tasks();
+        Task t;
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks WHERE user_id = " + id);
+            while (rs.next()) {
+                t = new Task();
+                t.setId(rs.getInt("ID"));
+                t.setUser_id(rs.getInt("user_id"));
+                t.setStart(rs.getString("start"));
+                t.setEnd(rs.getString("end"));
+                t.setDescription(rs.getString("description"));
+                t.setPlace(rs.getString("place"));
+                tas.add(t);
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+
+        return tas;
+    }
 }

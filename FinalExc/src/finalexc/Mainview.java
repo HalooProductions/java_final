@@ -5,12 +5,21 @@
  */
 package finalexc;
 
+import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author s303004
  */
 public class Mainview extends javax.swing.JFrame {
-    private final User loggedUser;
+    protected final User loggedUser;
     /**
      * Creates new form Mainview
      * @param u
@@ -19,6 +28,24 @@ public class Mainview extends javax.swing.JFrame {
         loggedUser = u;
         initComponents();
         modifyComponents();
+    }
+    
+    private void handleErrors(List<Integer> errors) {        
+        for (Integer error : errors) {
+            switch (error) {
+                case 2:
+                    startDateInput.setBackground(Color.red);
+                    break;
+                case 3:
+                    endDateInput.setBackground(Color.red);
+                    break;
+                case 4:
+                    placeInput.setBackground(Color.red);
+                    break;
+            }
+        }
+        
+        errorDisplay.setText("Tiedoissa oli virheitä. Korjaa virheet ja koita uudelleen.");
     }
 
     /**
@@ -31,6 +58,19 @@ public class Mainview extends javax.swing.JFrame {
     private void initComponents() {
 
         tasksFilterBtnGroup = new javax.swing.ButtonGroup();
+        addDialog = new javax.swing.JDialog();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descInput = new javax.swing.JTextArea();
+        saveBtn = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        startDateInput = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        placeInput = new javax.swing.JTextField();
+        endDateInput = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        errorDisplay = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taskTable = new javax.swing.JTable();
@@ -40,11 +80,111 @@ public class Mainview extends javax.swing.JFrame {
         deleteBtn = new javax.swing.JButton();
         reserveBtn = new javax.swing.JButton();
         startBtn = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        allTasksRadio = new javax.swing.JRadioButton();
+        ownTasksRadio = new javax.swing.JRadioButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+
+        descInput.setColumns(20);
+        descInput.setRows(5);
+        jScrollPane2.setViewportView(descInput);
+
+        saveBtn.setText("Tallenna");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Aloitus pvm (pp.kk.vvvv H:m:s)");
+
+        startDateInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                startDateInputFocusGained(evt);
+            }
+        });
+
+        jLabel6.setText("Paikka");
+
+        jLabel5.setText("Lopetus pvm (pp.kk.vvvv H:m:s)");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("Tehtävän lisäys");
+
+        placeInput.setToolTipText("");
+        placeInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                placeInputFocusGained(evt);
+            }
+        });
+
+        endDateInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                endDateInputFocusGained(evt);
+            }
+        });
+
+        jLabel8.setText("Tehtävän kuvaus");
+
+        errorDisplay.setForeground(new java.awt.Color(204, 0, 51));
+        errorDisplay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        javax.swing.GroupLayout addDialogLayout = new javax.swing.GroupLayout(addDialog.getContentPane());
+        addDialog.getContentPane().setLayout(addDialogLayout);
+        addDialogLayout.setHorizontalGroup(
+            addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(addDialogLayout.createSequentialGroup()
+                            .addComponent(errorDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(18, 18, 18)
+                            .addComponent(saveBtn))
+                        .addGroup(addDialogLayout.createSequentialGroup()
+                            .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
+                                .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6)
+                                .addComponent(placeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        addDialogLayout.setVerticalGroup(
+            addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(addDialogLayout.createSequentialGroup()
+                        .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(placeInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
+                .addGap(30, 30, 30)
+                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveBtn)
+                    .addComponent(errorDisplay))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 550));
@@ -88,26 +228,41 @@ public class Mainview extends javax.swing.JFrame {
         nameLabel.setText("no user");
 
         addBtn.setText("Lisää");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
 
         readyBtn.setText("Valmis");
 
         deleteBtn.setText("Poista");
 
         reserveBtn.setText("Varaa");
-
-        startBtn.setText("Aloita");
-
-        tasksFilterBtnGroup.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Kaikki vapaat tehtävät");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        reserveBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                reserveBtnActionPerformed(evt);
             }
         });
 
-        tasksFilterBtnGroup.add(jRadioButton2);
-        jRadioButton2.setText("Vain omat tehtävät");
+        startBtn.setText("Aloita");
+
+        tasksFilterBtnGroup.add(allTasksRadio);
+        allTasksRadio.setSelected(true);
+        allTasksRadio.setText("Kaikki vapaat tehtävät");
+        allTasksRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allTasksRadioActionPerformed(evt);
+            }
+        });
+
+        tasksFilterBtnGroup.add(ownTasksRadio);
+        ownTasksRadio.setText("Vain omat tehtävät");
+        ownTasksRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ownTasksRadioActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -125,9 +280,9 @@ public class Mainview extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(allTasksRadio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
+                        .addComponent(ownTasksRadio)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(addBtn)
@@ -142,7 +297,7 @@ public class Mainview extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -158,8 +313,8 @@ public class Mainview extends javax.swing.JFrame {
                     .addComponent(nameLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(allTasksRadio)
+                    .addComponent(ownTasksRadio))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -169,7 +324,7 @@ public class Mainview extends javax.swing.JFrame {
                     .addComponent(deleteBtn)
                     .addComponent(reserveBtn)
                     .addComponent(startBtn))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
@@ -180,21 +335,112 @@ public class Mainview extends javax.swing.JFrame {
         readyBtn.setEnabled(false);
         startBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
+        addDialog.setSize(470, 320);
     }
     
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void allTasksRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allTasksRadioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_allTasksRadioActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         nameLabel.setText(loggedUser.getName());
+        this.updateTable(1);
         
-        ProjectManagementController pmc = new ProjectManagementController();
-        TaskTableModel model = new TaskTableModel(pmc.getOpenTasks());
-        
-        taskTable.setModel(model);
+        taskTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                reserveBtn.setEnabled(true);
+            }
+        });
     }//GEN-LAST:event_formWindowOpened
 
+    private void reserveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveBtnActionPerformed
+        int row = taskTable.getSelectedRow();
+        int selectedId = (int) taskTable.getModel().getValueAt(row, 0);
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        pmc.reserveTaskForUser(selectedId, loggedUser.getId());
+        
+        this.updateTable(1);
+    }//GEN-LAST:event_reserveBtnActionPerformed
+
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        addDialog.setVisible(true);
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        String startDateStr = startDateInput.getText();
+        String endDateStr = endDateInput.getText();
+        String placeStr = placeInput.getText();
+        String description = descInput.getText();
+
+        List<Integer> errorList = new ArrayList<Integer>();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+        Date parsedStart = new Date();
+        Date parsedEnd = new Date();
+
+        try {
+            parsedStart = formatter.parse(startDateStr);
+        } catch (ParseException e) {
+            errorList.add(2);
+        }
+
+        try {
+            parsedEnd = formatter.parse(endDateStr);
+        } catch (ParseException e) {
+            errorList.add(3);
+        }
+
+        if (placeStr.isEmpty()) {
+            errorList.add(4);
+        }
+
+        if (errorList.isEmpty()) {
+            SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedStart = targetFormat.format(parsedStart);
+            String formattedEnd = targetFormat.format(parsedEnd);
+
+            ProjectManagementController pmc = new ProjectManagementController();
+            pmc.addTask(formattedStart, formattedEnd, description, placeStr);
+            addDialog.setVisible(false);
+            this.updateTable(1);
+        } else {
+            handleErrors(errorList);
+        }
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void startDateInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startDateInputFocusGained
+        startDateInput.setBackground(Color.white);
+    }//GEN-LAST:event_startDateInputFocusGained
+
+    private void placeInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_placeInputFocusGained
+        placeInput.setBackground(Color.white);
+    }//GEN-LAST:event_placeInputFocusGained
+
+    private void endDateInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endDateInputFocusGained
+        endDateInput.setBackground(Color.white);
+    }//GEN-LAST:event_endDateInputFocusGained
+
+    private void ownTasksRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ownTasksRadioActionPerformed
+        if (ownTasksRadio.isSelected()) {
+            this.updateTable(2);
+        }
+    }//GEN-LAST:event_ownTasksRadioActionPerformed
+
+    private void updateTable(int mode) {
+        TaskTableModel model;
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        if (mode == 1) {
+            model = new TaskTableModel(pmc.getOpenTasks());
+        } else {
+            model = new TaskTableModel(pmc.getUserTasks(loggedUser.getId()));
+        }
+        
+        taskTable.setModel(model);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -233,18 +479,31 @@ public class Mainview extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JDialog addDialog;
+    private javax.swing.JRadioButton allTasksRadio;
     private javax.swing.JButton deleteBtn;
+    private javax.swing.JTextArea descInput;
+    private javax.swing.JTextField endDateInput;
+    private javax.swing.JLabel errorDisplay;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JRadioButton ownTasksRadio;
+    private javax.swing.JTextField placeInput;
     private javax.swing.JButton readyBtn;
     private javax.swing.JButton reserveBtn;
+    private javax.swing.JButton saveBtn;
     private javax.swing.JButton startBtn;
+    private javax.swing.JTextField startDateInput;
     private javax.swing.JTable taskTable;
     private javax.swing.ButtonGroup tasksFilterBtnGroup;
     // End of variables declaration//GEN-END:variables
