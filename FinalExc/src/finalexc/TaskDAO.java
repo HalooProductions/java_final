@@ -104,7 +104,7 @@ public class TaskDAO {
         return tas;
     }
 
-    public Tasks addTask(String start, String end, String description, String place) {
+    public Tasks addTask(String description, String place) {
         Tasks tas = new Tasks();
         Task t;
         Connection connect = null;
@@ -116,7 +116,7 @@ public class TaskDAO {
                 System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
             }
             Statement stmt = connect.createStatement();
-            int rs = stmt.executeUpdate("INSERT INTO tasks (user_id, start, end, description, place) VALUES (null, '" + start + "','" + end + "','" + description + "','" + place + "')");
+            int rs = stmt.executeUpdate("INSERT INTO tasks (user_id, description, place) VALUES (null, '" + description + "','" + place + "')");
 
         } catch (Exception ex) {
             System.err.println("Exception: " + ex.getMessage());
@@ -201,6 +201,7 @@ public class TaskDAO {
         Tasks tas = new Tasks();
         Task t;
         Connection connect = null;
+        boolean addStart = false;
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -208,9 +209,22 @@ public class TaskDAO {
             if (!connect.isClosed()) {
                 System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
             }
-            Statement stmt = connect.createStatement();
-            int rs = stmt.executeUpdate("UPDATE tasks SET end = '" + end + "' WHERE ID = " + id + " ");
-
+            Statement getStmt = connect.createStatement();
+            ResultSet getRs = getStmt.executeQuery("SELECT * FROM tasks WHERE id = " + id + " ");
+            while (getRs.next()) {
+                String startDate = getRs.getString("start");
+                if (startDate == null) {
+                    addStart = true;
+                }
+            }
+            
+            if (addStart) {
+                Statement stmt = connect.createStatement();
+                int rs = stmt.executeUpdate("UPDATE tasks SET start = '" + end + "', end = '" + end + "' WHERE ID = " + id + " ");
+            } else {
+                Statement stmt = connect.createStatement();
+                int rs = stmt.executeUpdate("UPDATE tasks SET end = '" + end + "' WHERE ID = " + id + " ");
+            }
         } catch (Exception ex) {
             System.err.println("Exception: " + ex.getMessage());
         } finally {
@@ -227,7 +241,7 @@ public class TaskDAO {
 
     }
 
-    public void deleteTask(String description) {
+    public void deleteTask(int id) {
         Connection connect = null;
 
         try {
@@ -237,7 +251,7 @@ public class TaskDAO {
                 System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
             }
             Statement stmt = connect.createStatement();
-            stmt.executeUpdate("DELETE FROM tasks WHERE description LIKE '" + description + "';");
+            stmt.executeUpdate("DELETE FROM tasks WHERE id = '" + id + "';");
 
         } catch (Exception ex) {
             System.err.println("Exception: " + ex.getMessage());
@@ -324,7 +338,46 @@ public class TaskDAO {
                 System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
             }
             Statement stmt = connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks WHERE user_id = " + id);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks WHERE user_id = " + id + " AND end IS NULL;");
+            while (rs.next()) {
+                t = new Task();
+                t.setId(rs.getInt("ID"));
+                t.setUser_id(rs.getInt("user_id"));
+                t.setStart(rs.getString("start"));
+                t.setEnd(rs.getString("end"));
+                t.setDescription(rs.getString("description"));
+                t.setPlace(rs.getString("place"));
+                tas.add(t);
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+
+        return tas;
+    }
+    
+    public Tasks getCompletedTasks() {
+        Tasks tas = new Tasks();
+        Task t;
+        Connection connect = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tasks WHERE end IS NOT NULL;");
             while (rs.next()) {
                 t = new Task();
                 t.setId(rs.getInt("ID"));

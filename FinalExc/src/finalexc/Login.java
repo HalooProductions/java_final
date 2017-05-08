@@ -21,6 +21,22 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         modifyComponents();
     }
+    
+    private void performLogin() {
+        String username = usernameInput.getText();
+        
+        char[] passwordChars = passwordInput.getPassword();
+        String password = String.valueOf(passwordChars);
+        
+        ProjectManagementController pcontroller = new ProjectManagementController();
+        if (pcontroller.isCorrectUser(username, password)) {
+            User u = pcontroller.getUser(username, password);
+            this.setVisible(false);
+            Mainview.main(u);
+        } else {
+            System.out.println("Väärä käyttäjä");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +71,12 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Kirjaudu sisään");
 
+        passwordInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordInputKeyReleased(evt);
+            }
+        });
+
         registerBtn.setForeground(new java.awt.Color(51, 153, 255));
         registerBtn.setText("Rekisteröidy");
         registerBtn.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -76,13 +98,14 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
-                            .addComponent(loginBtn, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(usernameInput)
                             .addComponent(passwordInput)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(registerBtn)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGap(72, 72, 72)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(loginBtn)
+                            .addComponent(registerBtn))))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,9 +122,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(passwordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(loginBtn)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(registerBtn)
-                .addGap(19, 19, 19))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -112,20 +135,14 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_registerBtnActionPerformed
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        String username = usernameInput.getText();
-        
-        char[] passwordChars = passwordInput.getPassword();
-        String password = String.valueOf(passwordChars);
-        
-        ProjectManagementController pcontroller = new ProjectManagementController();
-        if (pcontroller.isCorrectUser(username, password)) {
-            User u = pcontroller.getUser(username, password);
-            this.setVisible(false);
-            Mainview.main(u);
-        } else {
-            System.out.println("Väärä käyttäjä");
-        }
+        this.performLogin();
     }//GEN-LAST:event_loginBtnActionPerformed
+
+    private void passwordInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordInputKeyReleased
+        if (evt.getKeyCode() == 10) {
+            this.performLogin();
+        }
+    }//GEN-LAST:event_passwordInputKeyReleased
 
     private void modifyComponents() {
         registerBtn.setFocusPainted(false);
@@ -146,13 +163,13 @@ public class Login extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            //javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
-            }*/
+            }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

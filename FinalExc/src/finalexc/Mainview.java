@@ -20,12 +20,15 @@ import javax.swing.event.ListSelectionListener;
  */
 public class Mainview extends javax.swing.JFrame {
     protected final User loggedUser;
+    private int selectedMode;
+    
     /**
      * Creates new form Mainview
      * @param u
      */
     public Mainview(User u) {
         loggedUser = u;
+        selectedMode = 1;
         initComponents();
         modifyComponents();
     }
@@ -33,12 +36,6 @@ public class Mainview extends javax.swing.JFrame {
     private void handleErrors(List<Integer> errors) {        
         for (Integer error : errors) {
             switch (error) {
-                case 2:
-                    startDateInput.setBackground(Color.red);
-                    break;
-                case 3:
-                    endDateInput.setBackground(Color.red);
-                    break;
                 case 4:
                     placeInput.setBackground(Color.red);
                     break;
@@ -59,17 +56,13 @@ public class Mainview extends javax.swing.JFrame {
 
         tasksFilterBtnGroup = new javax.swing.ButtonGroup();
         addDialog = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        placeInput = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descInput = new javax.swing.JTextArea();
-        saveBtn = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        startDateInput = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        placeInput = new javax.swing.JTextField();
-        endDateInput = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        saveTaskBtn = new javax.swing.JButton();
         errorDisplay = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -82,79 +75,48 @@ public class Mainview extends javax.swing.JFrame {
         startBtn = new javax.swing.JButton();
         allTasksRadio = new javax.swing.JRadioButton();
         ownTasksRadio = new javax.swing.JRadioButton();
+        readyTasksRadioBtn = new javax.swing.JRadioButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel2.setText("Tehtävän lisäys");
+
+        jLabel3.setText("Paikka");
+
+        jLabel4.setText("Kuvaus");
 
         descInput.setColumns(20);
         descInput.setRows(5);
         jScrollPane2.setViewportView(descInput);
 
-        saveBtn.setText("Tallenna");
-        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+        saveTaskBtn.setText("Tallenna");
+        saveTaskBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBtnActionPerformed(evt);
+                saveTaskBtnActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Aloitus pvm (pp.kk.vvvv H:m:s)");
-
-        startDateInput.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                startDateInputFocusGained(evt);
-            }
-        });
-
-        jLabel6.setText("Paikka");
-
-        jLabel5.setText("Lopetus pvm (pp.kk.vvvv H:m:s)");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Tehtävän lisäys");
-
-        placeInput.setToolTipText("");
-        placeInput.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                placeInputFocusGained(evt);
-            }
-        });
-
-        endDateInput.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                endDateInputFocusGained(evt);
-            }
-        });
-
-        jLabel8.setText("Tehtävän kuvaus");
-
-        errorDisplay.setForeground(new java.awt.Color(204, 0, 51));
-        errorDisplay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        errorDisplay.setForeground(new java.awt.Color(255, 0, 102));
+        errorDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout addDialogLayout = new javax.swing.GroupLayout(addDialog.getContentPane());
         addDialog.getContentPane().setLayout(addDialogLayout);
         addDialogLayout.setHorizontalGroup(
             addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(addDialogLayout.createSequentialGroup()
+                .addComponent(saveTaskBtn)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(addDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(addDialogLayout.createSequentialGroup()
-                            .addComponent(errorDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(18, 18, 18)
-                            .addComponent(saveBtn))
-                        .addGroup(addDialogLayout.createSequentialGroup()
-                            .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5)
-                                .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)
-                                .addComponent(placeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(errorDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(placeInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         addDialogLayout.setVerticalGroup(
@@ -163,27 +125,18 @@ public class Mainview extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel8))
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(addDialogLayout.createSequentialGroup()
-                        .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(placeInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2))
-                .addGap(30, 30, 30)
-                .addGroup(addDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveBtn)
-                    .addComponent(errorDisplay))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(placeInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(saveTaskBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -235,8 +188,18 @@ public class Mainview extends javax.swing.JFrame {
         });
 
         readyBtn.setText("Valmis");
+        readyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readyBtnActionPerformed(evt);
+            }
+        });
 
         deleteBtn.setText("Poista");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
         reserveBtn.setText("Varaa");
         reserveBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -246,6 +209,11 @@ public class Mainview extends javax.swing.JFrame {
         });
 
         startBtn.setText("Aloita");
+        startBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startBtnActionPerformed(evt);
+            }
+        });
 
         tasksFilterBtnGroup.add(allTasksRadio);
         allTasksRadio.setSelected(true);
@@ -261,6 +229,14 @@ public class Mainview extends javax.swing.JFrame {
         ownTasksRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ownTasksRadioActionPerformed(evt);
+            }
+        });
+
+        tasksFilterBtnGroup.add(readyTasksRadioBtn);
+        readyTasksRadioBtn.setText("Valmiit tehtävät");
+        readyTasksRadioBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readyTasksRadioBtnActionPerformed(evt);
             }
         });
 
@@ -283,6 +259,8 @@ public class Mainview extends javax.swing.JFrame {
                         .addComponent(allTasksRadio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ownTasksRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(readyTasksRadioBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(addBtn)
@@ -314,7 +292,8 @@ public class Mainview extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(allTasksRadio)
-                    .addComponent(ownTasksRadio))
+                    .addComponent(ownTasksRadio)
+                    .addComponent(readyTasksRadioBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -324,7 +303,7 @@ public class Mainview extends javax.swing.JFrame {
                     .addComponent(deleteBtn)
                     .addComponent(reserveBtn)
                     .addComponent(startBtn))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -338,17 +317,34 @@ public class Mainview extends javax.swing.JFrame {
         addDialog.setSize(470, 320);
     }
     
+    private void disableBtns() {
+        reserveBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
+        readyBtn.setEnabled(false);
+        startBtn.setEnabled(false);
+    }
+    
     private void allTasksRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allTasksRadioActionPerformed
-        // TODO add your handling code here:
+        if (allTasksRadio.isSelected()) {
+            this.selectedMode = 1;
+            this.updateTable(this.selectedMode);
+            this.disableBtns();
+        }
     }//GEN-LAST:event_allTasksRadioActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         nameLabel.setText(loggedUser.getName());
-        this.updateTable(1);
+        this.updateTable(this.selectedMode);
         
         taskTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
+                if (selectedMode == 2) {
+                    readyBtn.setEnabled(true);
+                    startBtn.setEnabled(true);
+                }
+                
                 reserveBtn.setEnabled(true);
+                deleteBtn.setEnabled(true);
             }
         });
     }//GEN-LAST:event_formWindowOpened
@@ -360,73 +356,84 @@ public class Mainview extends javax.swing.JFrame {
         ProjectManagementController pmc = new ProjectManagementController();
         pmc.reserveTaskForUser(selectedId, loggedUser.getId());
         
-        this.updateTable(1);
+        this.updateTable(this.selectedMode);
     }//GEN-LAST:event_reserveBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         addDialog.setVisible(true);
     }//GEN-LAST:event_addBtnActionPerformed
 
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        String startDateStr = startDateInput.getText();
-        String endDateStr = endDateInput.getText();
+    private void ownTasksRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ownTasksRadioActionPerformed
+        if (ownTasksRadio.isSelected()) {
+            this.selectedMode = 2;
+            this.updateTable(this.selectedMode);
+            this.disableBtns();
+        }
+    }//GEN-LAST:event_ownTasksRadioActionPerformed
+
+    private void saveTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTaskBtnActionPerformed
         String placeStr = placeInput.getText();
         String description = descInput.getText();
 
         List<Integer> errorList = new ArrayList<Integer>();
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-
-        Date parsedStart = new Date();
-        Date parsedEnd = new Date();
-
-        try {
-            parsedStart = formatter.parse(startDateStr);
-        } catch (ParseException e) {
-            errorList.add(2);
-        }
-
-        try {
-            parsedEnd = formatter.parse(endDateStr);
-        } catch (ParseException e) {
-            errorList.add(3);
-        }
 
         if (placeStr.isEmpty()) {
             errorList.add(4);
         }
 
         if (errorList.isEmpty()) {
-            SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedStart = targetFormat.format(parsedStart);
-            String formattedEnd = targetFormat.format(parsedEnd);
-
             ProjectManagementController pmc = new ProjectManagementController();
-            pmc.addTask(formattedStart, formattedEnd, description, placeStr);
+            pmc.addTask(description, placeStr);
             addDialog.setVisible(false);
-            this.updateTable(1);
+            this.updateTable(this.selectedMode);
         } else {
             handleErrors(errorList);
         }
-    }//GEN-LAST:event_saveBtnActionPerformed
+    }//GEN-LAST:event_saveTaskBtnActionPerformed
 
-    private void startDateInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startDateInputFocusGained
-        startDateInput.setBackground(Color.white);
-    }//GEN-LAST:event_startDateInputFocusGained
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        int row = taskTable.getSelectedRow();
+        int selectedId = (int) taskTable.getModel().getValueAt(row, 0);
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        pmc.deleteTask(selectedId);
+        
+        this.disableBtns();
+        
+        this.updateTable(this.selectedMode);
+    }//GEN-LAST:event_deleteBtnActionPerformed
 
-    private void placeInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_placeInputFocusGained
-        placeInput.setBackground(Color.white);
-    }//GEN-LAST:event_placeInputFocusGained
+    private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
+        int row = taskTable.getSelectedRow();
+        int selectedId = (int) taskTable.getModel().getValueAt(row, 0);
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        pmc.startTask(selectedId);
+        
+        this.disableBtns();
+        
+        this.updateTable(this.selectedMode);
+    }//GEN-LAST:event_startBtnActionPerformed
 
-    private void endDateInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endDateInputFocusGained
-        endDateInput.setBackground(Color.white);
-    }//GEN-LAST:event_endDateInputFocusGained
+    private void readyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyBtnActionPerformed
+        int row = taskTable.getSelectedRow();
+        int selectedId = (int) taskTable.getModel().getValueAt(row, 0);
+        
+        ProjectManagementController pmc = new ProjectManagementController();
+        pmc.endTask(selectedId);
+        
+        this.disableBtns();
+        
+        this.updateTable(this.selectedMode);
+    }//GEN-LAST:event_readyBtnActionPerformed
 
-    private void ownTasksRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ownTasksRadioActionPerformed
-        if (ownTasksRadio.isSelected()) {
-            this.updateTable(2);
+    private void readyTasksRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyTasksRadioBtnActionPerformed
+        if (readyTasksRadioBtn.isSelected()) {
+            this.selectedMode = 3;
+            this.updateTable(this.selectedMode);
+            this.disableBtns();
         }
-    }//GEN-LAST:event_ownTasksRadioActionPerformed
+    }//GEN-LAST:event_readyTasksRadioBtnActionPerformed
 
     private void updateTable(int mode) {
         TaskTableModel model;
@@ -434,7 +441,10 @@ public class Mainview extends javax.swing.JFrame {
         ProjectManagementController pmc = new ProjectManagementController();
         if (mode == 1) {
             model = new TaskTableModel(pmc.getOpenTasks());
+        } else if (mode == 3) {
+            model = new TaskTableModel(pmc.getCompletedTasks());
         } else {
+            System.out.println("hello");
             model = new TaskTableModel(pmc.getUserTasks(loggedUser.getId()));
         }
         
@@ -451,13 +461,13 @@ public class Mainview extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            //javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
-            }*/
+            }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Mainview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -483,14 +493,11 @@ public class Mainview extends javax.swing.JFrame {
     private javax.swing.JRadioButton allTasksRadio;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JTextArea descInput;
-    private javax.swing.JTextField endDateInput;
     private javax.swing.JLabel errorDisplay;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -500,10 +507,10 @@ public class Mainview extends javax.swing.JFrame {
     private javax.swing.JRadioButton ownTasksRadio;
     private javax.swing.JTextField placeInput;
     private javax.swing.JButton readyBtn;
+    private javax.swing.JRadioButton readyTasksRadioBtn;
     private javax.swing.JButton reserveBtn;
-    private javax.swing.JButton saveBtn;
+    private javax.swing.JButton saveTaskBtn;
     private javax.swing.JButton startBtn;
-    private javax.swing.JTextField startDateInput;
     private javax.swing.JTable taskTable;
     private javax.swing.ButtonGroup tasksFilterBtnGroup;
     // End of variables declaration//GEN-END:variables

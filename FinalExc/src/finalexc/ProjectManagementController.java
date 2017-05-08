@@ -53,7 +53,23 @@ public class ProjectManagementController {
         new TaskDAO().reserveForUser(id, user_id);
     }
     
-    public void addTask(String start, String end, String description, String place) {
-        new TaskDAO().addTask(start, end, description, place);
+    public void addTask(String description, String place) {
+        new TaskDAO().addTask(description, place);
+    }
+    
+    public void deleteTask(int id) {
+        new TaskDAO().deleteTask(id);
+    }
+    
+    public void startTask(int id) {
+        new TaskDAO().addStart(id);
+    }
+    
+    public void endTask(int id) {
+        new TaskDAO().addEnd(id);
+    }
+    
+    public Tasks getCompletedTasks() {
+        return new TaskDAO().getCompletedTasks();
     }
 }
