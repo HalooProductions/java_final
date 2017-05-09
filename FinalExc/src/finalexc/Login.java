@@ -20,6 +20,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         modifyComponents();
+        jDialog1.setSize(400, 300);
     }
     
     private void performLogin() {
@@ -37,6 +38,21 @@ public class Login extends javax.swing.JFrame {
             System.out.println("Väärä käyttäjä");
         }
     }
+    
+    private void performLogin(String username, String password) {        
+        ProjectManagementController pcontroller = new ProjectManagementController();
+        if (pcontroller.isCorrectUser(username, password)) {
+            User u = pcontroller.getUser(username, password);
+            this.setVisible(false);
+            Mainview.main(u);
+        } else {
+            System.out.println("Väärä käyttäjä");
+        }
+    }
+    
+    private void displayError(String text) {
+        errorDisplay.setText(text);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,6 +63,16 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        regNameInput = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        regBtn = new javax.swing.JButton();
+        regPassField1 = new javax.swing.JPasswordField();
+        regPassField2 = new javax.swing.JPasswordField();
+        errorDisplay = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,6 +80,68 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         passwordInput = new javax.swing.JPasswordField();
         registerBtn = new javax.swing.JButton();
+
+        jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel4.setText("Rekisteröidy");
+
+        jLabel5.setText("Käyttäjänimi");
+
+        jLabel6.setText("Salasana");
+
+        jLabel7.setText("Salasana uudelleen");
+
+        regBtn.setText("Rekisteröidy");
+        regBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regBtnActionPerformed(evt);
+            }
+        });
+
+        errorDisplay.setForeground(new java.awt.Color(255, 0, 51));
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(regPassField1)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(regNameInput, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(regPassField2, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGap(33, 33, 33)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(regBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(errorDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(errorDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(regNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(regPassField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(regBtn)
+                    .addComponent(regPassField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,7 +219,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
-        // TODO add your handling code here:
+        jDialog1.setVisible(true);
     }//GEN-LAST:event_registerBtnActionPerformed
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
@@ -143,6 +231,29 @@ public class Login extends javax.swing.JFrame {
             this.performLogin();
         }
     }//GEN-LAST:event_passwordInputKeyReleased
+
+    private void regBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regBtnActionPerformed
+        String name = regNameInput.getText();
+        
+        char[] passwordChars1 = regPassField1.getPassword();
+        String password1 = String.valueOf(passwordChars1);
+        
+        char[] passwordChars2 = regPassField2.getPassword();
+        String password2 = String.valueOf(passwordChars2);
+        
+        if (password1.equals(password2)) {
+            ProjectManagementController pmc = new ProjectManagementController();
+            boolean success = pmc.registerUser(name, password1);
+            if (!success) {
+                this.displayError("Virhe lisättäessä!");
+            } else {
+                jDialog1.setVisible(false);
+                this.performLogin(name, password1);
+            }
+        } else {
+            this.displayError("Salasanat eivät täsmää!");
+        }
+    }//GEN-LAST:event_regBtnActionPerformed
 
     private void modifyComponents() {
         registerBtn.setFocusPainted(false);
@@ -190,11 +301,21 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorDisplay;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JButton loginBtn;
     private javax.swing.JPasswordField passwordInput;
+    private javax.swing.JButton regBtn;
+    private javax.swing.JTextField regNameInput;
+    private javax.swing.JPasswordField regPassField1;
+    private javax.swing.JPasswordField regPassField2;
     private javax.swing.JButton registerBtn;
     private javax.swing.JTextField usernameInput;
     // End of variables declaration//GEN-END:variables

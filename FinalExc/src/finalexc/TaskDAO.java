@@ -389,4 +389,34 @@ public class TaskDAO {
 
         return tas;
     }
+    
+    public boolean registerUser(String name, String password) {
+        Connection connect = null;
+        boolean returnVal = false;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection(dbUrl, "root", "");
+            if (!connect.isClosed()) {
+                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");
+            }
+            Statement stmt = connect.createStatement();
+            int rs = stmt.executeUpdate("INSERT INTO users (name, password, description) VALUES ('" + name + "', '" + password + "', 'New user')");
+            if (rs >= 0) {
+                returnVal = true;
+            }
+        } catch (Exception ex) {
+            System.err.println("Exception: " + ex.getMessage());
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                //---------------------------
+            }
+
+        }
+        return returnVal;
+    }
 }

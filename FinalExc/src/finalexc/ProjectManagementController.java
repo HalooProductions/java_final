@@ -72,4 +72,8 @@ public class ProjectManagementController {
     public Tasks getCompletedTasks() {
         return new TaskDAO().getCompletedTasks();
     }
+    
+    public boolean registerUser(String name, String password) {
+        return new TaskDAO().registerUser(name, password);
+    }
 }
