@@ -38,9 +38,28 @@ public class UserDAOTest {
     }
     
     @Test
-    public void testGetUsers() {
+    public void addUsers() {
         UserDAO instance = new UserDAO();
         instance.addUser("Testi", "testipassu", "testi kuvaus!!");
+    }
+    @Test
+    public void getUsers() {
+        UserDAO instance = new UserDAO();
+        instance.getUsers();
+    }
+        public void getUser() {
+        UserDAO instance = new UserDAO();
+        instance.getUser("Testi", "testipassu");
+    }
+        @Test
+    public void deleteUsers() {
+        UserDAO instance = new UserDAO();
+        instance.deleteUser("Testi");
+    }
+            @Test
+    public void getWithNameAndPassword() {
+        UserDAO instance = new UserDAO();
+        instance.getWithNameAndPassword("Testi", "testipassu");
     }
     
     

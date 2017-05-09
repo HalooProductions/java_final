@@ -37,25 +37,66 @@ public class TaskDAOTest {
     public void tearDown() {
     }
 
-    /*@Test
+    @Test
     public void testGetTasks() {
         TaskDAO instance = new TaskDAO();
-        instance.addTask("2008-11-11", "2009-11-11", "töihommia", "missä lystääpi");
-    }   
+        instance.getTasks();
+    }
+    @Test
+    public void testOpenTasks() {
+        TaskDAO instance = new TaskDAO();
+        instance.getOpenTasks();
+    }
+    @Test
+    public void testAddTasks() {
+        TaskDAO instance = new TaskDAO();
+        instance.addTask("töihommia", "missä lystääpi");
+    } 
     @Test
     public void testAddStart() {
         TaskDAO instance = new TaskDAO();
         instance.addStart(7);
-    } */  
-    @Test
-    public void testAddEnd() {
-        TaskDAO instance = new TaskDAO();
-        instance.addEnd(7);
     }
     @Test
     public void testAddId() {
         TaskDAO instance = new TaskDAO();
         instance.addId(1, 7);
+    } 
+    @Test
+    public void testAddEnd() {
+        TaskDAO instance = new TaskDAO();
+        instance.addEnd(7);
     }
-    
+
+        @Test
+    public void deleteTask() {
+        TaskDAO instance = new TaskDAO();
+        instance.deleteTask(1);
+    }
+    @Test
+    public void testGetUser() {
+        TaskDAO instance = new TaskDAO();
+        instance.getUser(1);
+    }
+    @Test
+    public void testReserveForUser() {
+        TaskDAO instance = new TaskDAO();
+        instance.reserveForUser(1, 7);
+    }
+    @Test
+    public void testGetUserTasks() {
+        TaskDAO instance = new TaskDAO();
+        instance.getUserTasks(1);
+    }
+    @Test
+    public void testGetCompletedTasks() {
+        TaskDAO instance = new TaskDAO();
+        instance.getCompletedTasks();
+    }
+    /*@Test
+    public void testRegisterUser() {
+        TaskDAO instance = new TaskDAO();
+        instance.registerUser("Testi", "testipassu");
+    }
+    */
 }
