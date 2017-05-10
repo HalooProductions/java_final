@@ -37,10 +37,14 @@ public class UserDAOTest {
     public void tearDown() {
     }
     
-    @Test
+   /* @Test
     public void addUsers() {
         UserDAO instance = new UserDAO();
         instance.addUser("Testi", "testipassu", "testi kuvaus!!");
+        ProjectManagementController pmc = new ProjectManagementController();
+        assertEquals([]"testipassu testi",pmc.getUser("Testi", "testipassu");
+        //assertEquals([Fail] "Testi", "gf");
+        */
     }
     @Test
     public void getUsers() {
